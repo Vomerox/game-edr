@@ -13,6 +13,7 @@ Un jeu web éducatif en 3D pour apprendre le **routage IP**, le **calcul d'adres
 ![Three.js](https://img.shields.io/badge/Three.js-r128-000000?logo=threedotjs&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?logo=php&logoColor=white)
 ![Langue](https://img.shields.io/badge/langue-fran%C3%A7ais-0055A4)
+[![Licence MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
 <img src="docs/images/hero.jpg" alt="Vue d'ensemble d'une mission : deux postes reliés par un relais, liaison établie" width="100%">
 
@@ -32,6 +33,7 @@ Un jeu web éducatif en 3D pour apprendre le **routage IP**, le **calcul d'adres
 - [Structure du projet](#structure-du-projet)
 - [Documentation](#documentation)
 - [Crédits](#crédits)
+- [Licence](#licence)
 
 ---
 
@@ -219,3 +221,11 @@ Créé par le **cours réseaux du Groupement Informatiques & Réseaux, 2026**.
 
 - Rendu 3D : [Three.js](https://threejs.org/) (licence MIT)
 - Polices : *Black Ops One* et *Share Tech Mono* (Google Fonts, licence SIL OFL)
+
+---
+
+## Licence
+
+Ce projet est distribué sous **licence MIT** : vous pouvez l'utiliser, le modifier et le redistribuer librement, y compris pour vos propres cours, à condition de conserver la mention de copyright et le texte de la licence. Voir le fichier [LICENSE](LICENSE).
+
+La bibliothèque Three.js incluse dans `lib/` conserve sa propre licence MIT.
