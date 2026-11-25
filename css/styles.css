@@ -1,0 +1,2883 @@
+@import url('css2.css');
+
+/* =============================================
+   GAME EDR - STYLE MILITAIRE CARTOON DÉSERT
+   ============================================= */
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #1a1408;
+    font-family: 'Share Tech Mono', monospace;
+    color: #e8d5a3;
+    user-select: none;
+}
+
+/* --- PANELS HUD --- */
+.panel {
+    position: absolute;
+    background: rgba(30, 25, 15, 0.92);
+    border: 3px solid #8b7355;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(210, 180, 100, 0.15), inset 0 0 30px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background-image:
+        radial-gradient(circle at 8px 8px, #5c4a2e 3px, transparent 3px),
+        radial-gradient(circle at calc(100% - 8px) 8px, #5c4a2e 3px, transparent 3px),
+        radial-gradient(circle at 8px calc(100% - 8px), #5c4a2e 3px, transparent 3px),
+        radial-gradient(circle at calc(100% - 8px) calc(100% - 8px), #5c4a2e 3px, transparent 3px);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+#hud-top-left { top: 20px; left: 20px; width: 360px; max-height: 35vh; overflow-y: auto; }
+#hud-top-right { top: 20px; right: 20px; text-align: right; }
+
+/* --- TIMER --- */
+#timer {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 3em;
+    color: #e8d5a3;
+    text-shadow: 0 0 10px rgba(232, 213, 163, 0.5), 2px 2px 0 #3a2f1a;
+    margin-bottom: 10px;
+}
+
+#timer.danger {
+    color: #ff4444;
+    text-shadow: 0 0 15px rgba(255, 68, 68, 0.6), 2px 2px 0 #3a0000;
+    animation: timerPulse 0.5s infinite alternate;
+}
+
+@keyframes timerPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+#timer.timer-expired {
+    color: #ff6600;
+    text-shadow: 0 0 20px rgba(255, 102, 0, 0.8), 0 0 40px rgba(255, 68, 0, 0.4), 2px 2px 0 #3a1500;
+    animation: timerExpiredPulse 1.5s infinite alternate;
+}
+
+@keyframes timerExpiredPulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.6; }
+}
+
+/* =============================================
+   HUD SCORE BAR (Centre haut)
+   ============================================= */
+#hud-score-bar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
+    z-index: 500;
+    pointer-events: none;
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(30, 25, 15, 0.88);
+    border: 2px solid #5c4a2e;
+    border-top: none;
+    padding: 6px 14px 8px;
+    border-radius: 0 0 8px 8px;
+    min-width: 70px;
+}
+
+.score-label {
+    font-size: 0.6em;
+    color: #8a7a5a;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.score-val {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.15em;
+    color: #e8d5a3;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.combo-val { color: #ffaa22; }
+.errors-val { color: #ff6644; }
+.mention-val { color: #d4a84b; font-size: 0.85em; }
+.rank-val { color: #88bb55; font-size: 0.7em; }
+
+.combo-hot {
+    animation: comboFlash 0.3s ease;
+    color: #ffdd00 !important;
+    text-shadow: 0 0 12px #ffaa00 !important;
+}
+
+@keyframes comboFlash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+/* =============================================
+   HUD STATUS (état liaison)
+   ============================================= */
+#hud-status {
+    bottom: 80px;
+    left: 20px;
+    padding: 10px 15px;
+    width: 200px;
+}
+
+.status-label {
+    font-size: 0.7em;
+    color: #8a7a5a;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.status-disconnected {
+    font-family: 'Black Ops One', monospace;
+    color: #ff4444;
+    font-size: 1.1em;
+    text-shadow: 0 0 8px rgba(255,68,68,0.5);
+    animation: statusBlink 1.5s infinite;
+}
+
+.status-connected {
+    font-family: 'Black Ops One', monospace;
+    color: #44ff44;
+    font-size: 1.1em;
+    text-shadow: 0 0 8px rgba(68,255,68,0.5);
+}
+
+@keyframes statusBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* =============================================
+   EVENT LOG (journal)
+   ============================================= */
+#event-log {
+    bottom: 80px;
+    right: 20px;
+    width: 340px;
+    max-height: 200px;
+    padding: 10px;
+}
+
+.event-log-title {
+    font-size: 0.7em;
+    color: #8a7a5a;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #3a3020;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+}
+
+#event-log-content {
+    max-height: 160px;
+    overflow-y: auto;
+    font-size: 0.78em;
+    line-height: 1.5;
+}
+
+.log-entry { padding: 2px 0; border-bottom: 1px solid rgba(60,50,30,0.3); }
+.log-time { color: #5c4a2e; margin-right: 6px; }
+.log-info { color: #a0956a; }
+.log-success { color: #66cc44; }
+.log-error { color: #ff5544; }
+.log-warning { color: #ddaa22; }
+
+#event-log-content::-webkit-scrollbar { width: 4px; }
+#event-log-content::-webkit-scrollbar-thumb { background: #5c4a2e; border-radius: 2px; }
+
+/* =============================================
+   MODALES
+   ============================================= */
+.modal {
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    border-color: #a08050;
+    border-width: 3px;
+}
+
+.hidden { display: none !important; }
+
+/* --- TITRES --- */
+h1, h2, h3 { margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+
+h1.glitch {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    color: #fff;
+    text-shadow: 3px 0 #c24a00, -3px 0 #4a8c00;
+    font-size: 2em;
+}
+
+h2 {
+    color: #d4a84b;
+    font-size: 1.1em;
+    border-bottom: 2px solid #5c4a2e;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    color: #d4a84b;
+    font-size: 1.2em;
+}
+
+p { color: #c0aa80; line-height: 1.5; }
+
+.hint {
+    font-size: 0.85em;
+    color: #8a7a5a;
+    margin-top: 8px;
+}
+
+.section-title {
+    border-bottom: 2px dashed #5c4a2e;
+    margin-top: 12px;
+    padding-bottom: 4px;
+    color: #d4a84b;
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* --- INPUTS --- */
+input {
+    background: #1a1408;
+    border: 2px solid #8b7355;
+    color: #e8d5a3;
+    padding: 7px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    width: 90%;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #d4a84b;
+    box-shadow: 0 0 10px rgba(212, 168, 75, 0.3);
+}
+
+input::placeholder { color: #5c4a2e; }
+
+/* --- BOUTONS --- */
+button {
+    padding: 10px 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.btn-large {
+    padding: 14px 35px;
+    font-size: 1.1em;
+    letter-spacing: 2px;
+}
+
+.modal-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 5px;
+}
+
+.modal-actions button { flex: 1; margin-top: 0; }
+
+.btn-danger {
+    background: linear-gradient(180deg, #9b2020, #6b0000);
+    color: white;
+    border: 2px solid #ff4444;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.btn-danger:hover { background: linear-gradient(180deg, #cc3030, #8b0000); transform: scale(1.03); }
+
+.btn-success {
+    background: linear-gradient(180deg, #4a7a20, #2d5a10);
+    color: white;
+    border: 2px solid #7ab530;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-size: 1em;
+}
+.btn-success:hover { background: linear-gradient(180deg, #5a9a30, #3a7020); transform: scale(1.03); }
+
+.btn-warning {
+    background: linear-gradient(180deg, #c89020, #8b6010);
+    color: white;
+    border: 2px solid #daa520;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.btn-warning:hover { background: linear-gradient(180deg, #daa530, #a07020); transform: scale(1.03); }
+
+.btn-action {
+    background: #3a3020;
+    color: #d4a84b;
+    border: 2px solid #5c4a2e;
+    padding: 6px;
+    width: 100%;
+    margin-top: 5px;
+}
+.btn-action:hover { background: #4a4030; border-color: #8b7355; }
+
+.pulse { animation: pulse 2s infinite; }
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(122, 181, 48, 0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(122, 181, 48, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(122, 181, 48, 0); }
+}
+
+/* =============================================
+   OVERLAYS
+   ============================================= */
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 5, 0, 0.92); z-index: 10000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; color: white;
+}
+
+.overlay h1.glitch { font-size: 3em; margin-bottom: 20px; }
+.overlay p { color: #c0aa80; font-size: 1.2em; margin-bottom: 30px; }
+
+.gameover-stats {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+    font-size: 1em;
+    color: #c0aa80;
+}
+.gameover-stats strong { color: #ff6644; }
+
+/* =============================================
+   BRIEFING OVERLAY
+   ============================================= */
+.briefing-container {
+    position: relative;
+    width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 25px 30px;
+}
+
+.brief-header {
+    font-family: 'Black Ops One', monospace;
+    font-size: 0.8em;
+    color: #8a7a5a;
+    letter-spacing: 5px;
+    margin-bottom: 4px;
+}
+
+.brief-name {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.6em;
+    color: #d4a84b;
+    margin-bottom: 18px;
+    text-shadow: 2px 2px 0 #1a1408;
+}
+
+/* Vidéo briefing militaire */
+.brief-video-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 6px;
+    border: 1px solid #3a2f1a;
+    border-radius: 4px;
+    background: rgba(10, 8, 4, 0.6);
+}
+
+.brief-video {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid #5c4a2e;
+    filter: sepia(0.3) contrast(1.1);
+}
+
+.brief-video-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6em;
+    color: #4a8c00;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: briefVideoLabelBlink 2s ease-in-out infinite;
+}
+
+@keyframes briefVideoLabelBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.brief-section {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #c0aa80;
+    font-size: 0.9em;
+}
+
+.brief-label {
+    color: #d4a84b;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brief-objectives {
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px solid #5c4a2e;
+    border-radius: 4px;
+    background: rgba(60,50,30,0.3);
+    margin-bottom: 20px;
+}
+
+/* =============================================
+   DEBRIEFING OVERLAY
+   ============================================= */
+.debrief-container {
+    position: relative;
+    width: 520px;
+    max-height: 88vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 25px 30px;
+}
+
+.debrief-title {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.3em;
+    color: #d4a84b;
+    margin-bottom: 2px;
+}
+
+.debrief-subtitle {
+    font-size: 0.75em;
+    color: #8a7a5a;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+}
+
+.debrief-medal {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.4em;
+    color: #ffdd44;
+    text-align: center;
+    margin: 10px 0;
+    text-shadow: 0 0 10px rgba(255,221,68,0.4);
+}
+
+.debrief-no-medal { color: #5c4a2e; font-size: 1em; }
+
+.debrief-newbest {
+    text-align: center;
+    color: #ffdd00;
+    font-family: 'Black Ops One', monospace;
+    font-size: 1em;
+    margin: 8px 0;
+    animation: newbestPulse 1s infinite alternate;
+}
+
+@keyframes newbestPulse {
+    from { text-shadow: 0 0 5px #ffaa00; }
+    to { text-shadow: 0 0 20px #ffdd00; }
+}
+
+.debrief-grid {
+    margin: 15px 0;
+    border: 2px solid #3a3020;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.debrief-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 12px;
+    font-size: 0.88em;
+    color: #c0aa80;
+    border-bottom: 1px solid #2a2418;
+}
+
+.debrief-row:last-child { border-bottom: none; }
+.debrief-sep { border-top: 2px solid #5c4a2e; }
+.debrief-good { color: #66cc44; }
+.debrief-penalty { color: #ff5544; background: rgba(100,20,10,0.15); }
+
+.debrief-total {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.15em;
+    color: #ffdd44 !important;
+    background: rgba(80,60,20,0.25);
+    border-top: 2px solid #d4a84b;
+}
+
+.debrief-mention, .debrief-rank, .debrief-streak {
+    font-size: 0.9em;
+    color: #d4a84b;
+    margin: 4px 0;
+}
+
+.debrief-prev {
+    text-align: center;
+    font-size: 0.8em;
+    color: #8a7a5a;
+    margin: 4px 0;
+}
+
+.debrief-feedback {
+    margin-top: 15px;
+    padding: 12px;
+    border: 2px solid #3a3020;
+    border-radius: 4px;
+    background: rgba(40,35,20,0.4);
+}
+
+.debrief-fb-title {
+    font-size: 0.75em;
+    color: #8a7a5a;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #3a3020;
+    padding-bottom: 4px;
+}
+
+.debrief-fb-row {
+    font-size: 0.85em;
+    color: #c0aa80;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.debrief-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.debrief-actions button { flex: 1; }
+
+/* --- LIGNES D'INTERFACE/ROUTE --- */
+.route-row, .interface-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.route-row input, .interface-row input { width: 30%; margin: 0; }
+.interface-row span { width: 40px; color: #d4a84b; font-weight: bold; }
+
+/* --- CRÉDITS --- */
+#credits {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 100;
+    padding: 0;
+    background: linear-gradient(0deg, rgba(20, 15, 5, 0.95) 0%, rgba(20, 15, 5, 0.6) 60%, transparent 100%);
+    transition: filter 0.2s;
+}
+#credits:hover {
+    filter: brightness(1.3);
+}
+#credits:hover .credits-inner {
+    border-color: #d4a84b;
+    box-shadow: 0 0 15px rgba(212, 168, 75, 0.3);
+}
+
+#credits .credits-inner {
+    display: inline-block;
+    background: rgba(60, 50, 30, 0.6);
+    border: 2px solid #8b7355;
+    border-bottom: none;
+    padding: 6px 30px 4px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#credits .credits-label {
+    display: block;
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 0.7em;
+    color: #d4a84b;
+    letter-spacing: 4px;
+    margin-bottom: 3px;
+}
+
+#credits .credits-text {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95em;
+    color: #e8d5a3;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* --- OVERLAY CRÉDITS COMPLET --- */
+.credits-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px 40px !important;
+    max-height: 85vh;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.credits-header {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #5c4a2e;
+}
+
+.credits-star {
+    font-size: 1.2em;
+    color: #d4a84b;
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+}
+
+.credits-game-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 2.8em;
+    color: #d4a84b;
+    text-shadow: 0 0 20px rgba(212, 168, 75, 0.4), 3px 3px 0 #3a2f1a;
+    margin: 0 0 8px 0;
+    letter-spacing: 6px;
+}
+
+.credits-subtitle {
+    font-size: 0.75em;
+    color: #a08050;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.credits-version {
+    display: inline-block;
+    background: rgba(212, 168, 75, 0.15);
+    border: 1px solid #8b7355;
+    padding: 4px 18px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: #d4a84b;
+    letter-spacing: 2px;
+}
+
+.credits-section {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #3a2f1a;
+}
+
+.credits-section-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    color: #d4a84b;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.credits-author {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.6em;
+    color: #e8d5a3;
+    text-shadow: 0 0 10px rgba(232, 213, 163, 0.3);
+    margin-bottom: 6px;
+}
+
+.credits-org {
+    font-size: 0.9em;
+    color: #a08050;
+    letter-spacing: 1px;
+}
+
+.credits-changelog {
+    text-align: left;
+}
+
+.changelog-entry {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(60, 50, 30, 0.3);
+    align-items: baseline;
+}
+
+.changelog-ver {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    color: #d4a84b;
+    font-size: 0.8em;
+    white-space: nowrap;
+    min-width: 50px;
+}
+
+.changelog-desc {
+    font-size: 0.82em;
+    color: #c0b080;
+    line-height: 1.4;
+}
+
+.credits-tech {
+    font-size: 0.85em;
+    color: #a08050;
+    letter-spacing: 1px;
+}
+
+.credits-footer {
+    margin-top: 15px;
+}
+
+.credits-year {
+    font-size: 0.75em;
+    color: #6b5a3a;
+    letter-spacing: 3px;
+}
+
+/* --- SCROLLBAR --- */
+.modal::-webkit-scrollbar, .debrief-container::-webkit-scrollbar, .briefing-container::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-track, .debrief-container::-webkit-scrollbar-track, .briefing-container::-webkit-scrollbar-track { background: #1a1408; }
+.modal::-webkit-scrollbar-thumb, .debrief-container::-webkit-scrollbar-thumb, .briefing-container::-webkit-scrollbar-thumb { background: #5c4a2e; border-radius: 3px; }
+.modal::-webkit-scrollbar-thumb:hover, .debrief-container::-webkit-scrollbar-thumb:hover { background: #8b7355; }
+
+/* =============================================
+   QUESTIONS BONUS - EPREUVES SUPPLEMENTAIRES
+   ============================================= */
+
+.bonus-question-container {
+    position: relative;
+    width: 560px;
+    max-height: 88vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 25px 30px;
+}
+
+.bonus-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #5c4a2e;
+    padding-bottom: 12px;
+}
+
+.bonus-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.3em;
+    color: #d4a84b;
+    letter-spacing: 3px;
+}
+
+.bonus-timer {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 2em;
+    color: #e8d5a3;
+    text-shadow: 0 0 10px rgba(232, 213, 163, 0.5), 2px 2px 0 #3a2f1a;
+}
+
+.bonus-timer.danger {
+    color: #ff4444;
+    text-shadow: 0 0 15px rgba(255, 68, 68, 0.6), 2px 2px 0 #3a0000;
+    animation: timerPulse 0.5s infinite alternate;
+}
+
+.bonus-prompt {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 2px solid #5c4a2e;
+    border-radius: 4px;
+    background: rgba(60, 50, 30, 0.3);
+}
+
+.bonus-ip-display {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 2em;
+    color: #00ff44;
+    text-align: center;
+    margin-top: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 68, 0.4);
+    letter-spacing: 3px;
+}
+
+.bonus-mask-info {
+    text-align: center;
+    font-size: 0.85em;
+    color: #a08050;
+    margin-top: 6px;
+    letter-spacing: 1px;
+}
+
+.bonus-instruction {
+    color: #c0aa80;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.bonus-input {
+    width: 100%;
+    background: #1a1408;
+    border: 2px solid #8b7355;
+    color: #e8d5a3;
+    padding: 10px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1em;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.bonus-input:focus {
+    outline: none;
+    border-color: #d4a84b;
+    box-shadow: 0 0 10px rgba(212, 168, 75, 0.3);
+}
+
+.bonus-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bonus-input-group {
+    margin-bottom: 10px;
+}
+
+.bonus-input-label {
+    display: block;
+    font-size: 0.85em;
+    color: #d4a84b;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.vlsm-group {
+    padding: 8px 10px;
+    border: 1px solid #3a3020;
+    border-radius: 4px;
+    background: rgba(40, 35, 20, 0.3);
+}
+
+.bonus-feedback {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.bonus-feedback.success {
+    background: rgba(0, 100, 0, 0.2);
+    border: 2px solid #44ff44;
+    color: #66cc44;
+}
+
+.bonus-feedback.failure {
+    background: rgba(100, 0, 0, 0.2);
+    border: 2px solid #ff4444;
+    color: #ff5544;
+}
+
+.bonus-feedback.timeout {
+    background: rgba(100, 50, 0, 0.2);
+    border: 2px solid #ff6600;
+    color: #ff8844;
+}
+
+.bonus-question-container .btn-large {
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* =============================================
+   ARCADE HIGH SCORES - SAISIE NOM
+   ============================================= */
+
+/* =============================================
+   ARCADE HIGH SCORES - CLASSEMENT / LEADERBOARD
+   ============================================= */
+
+.leaderboard-container {
+    text-align: center;
+}
+
+.arcade-screen {
+    position: relative;
+    width: 520px;
+    background: #0a0a08;
+    border: 4px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow:
+        0 0 40px rgba(0, 255, 68, 0.08),
+        0 0 80px rgba(0, 0, 0, 0.6),
+        inset 0 0 60px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+/* Scanlines CRT */
+.scanlines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.12) 2px,
+        rgba(0, 0, 0, 0.12) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Vignette CRT */
+.arcade-screen::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.lb-header {
+    position: relative;
+    z-index: 3;
+    font-family: 'Black Ops One', monospace;
+    font-size: 2.2em;
+    color: #ffaa00;
+    text-shadow:
+        0 0 12px rgba(255, 170, 0, 0.6),
+        0 0 30px rgba(255, 170, 0, 0.25);
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+}
+
+.lb-level-title {
+    position: relative;
+    z-index: 3;
+    font-size: 0.78em;
+    color: #666;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 10px;
+}
+
+.lb-table {
+    position: relative;
+    z-index: 3;
+}
+
+.lb-loading {
+    color: #00ff44;
+    font-size: 1em;
+    letter-spacing: 3px;
+    text-align: center;
+    padding: 20px;
+    animation: loadBlink 0.8s infinite alternate;
+}
+
+@keyframes loadBlink {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
+}
+
+.lb-empty {
+    color: #444;
+    font-size: 0.9em;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 25px;
+}
+
+/* Ligne du classement */
+.lb-row {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.05em;
+    color: #00cc44;
+    border-bottom: 1px solid rgba(0, 255, 68, 0.05);
+    opacity: 0;
+    animation: rowAppear 0.4s forwards ease-out;
+}
+
+@keyframes rowAppear {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lb-rank {
+    width: 42px;
+    color: #ffaa00;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 12px;
+    white-space: pre;
+}
+
+/* Top 3 couleurs spéciales */
+.lb-rank-1 {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+.lb-rank-2 {
+    color: #c0c0c0;
+    text-shadow: 0 0 6px rgba(192, 192, 192, 0.4);
+}
+.lb-rank-3 {
+    color: #cd7f32;
+    text-shadow: 0 0 6px rgba(205, 127, 50, 0.4);
+}
+
+.lb-name {
+    width: 72px;
+    color: #00ff44;
+    letter-spacing: 4px;
+    font-weight: bold;
+}
+
+.lb-dots {
+    flex: 1;
+    color: #1a2a1a;
+    overflow: hidden;
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+
+.lb-score-val {
+    width: 80px;
+    text-align: right;
+    color: #ffdd44;
+    font-weight: bold;
+}
+
+.lb-medal {
+    width: 45px;
+    text-align: center;
+    color: #ffaa00;
+    font-size: 0.9em;
+}
+
+/* Ligne du joueur mise en avant */
+.lb-row.lb-highlight {
+    color: #88ffaa;
+    text-shadow: 0 0 8px rgba(136, 255, 170, 0.4);
+    background: rgba(0, 255, 68, 0.06);
+    border-left: 2px solid #00ff44;
+    padding-left: 6px;
+}
+
+.lb-row.lb-highlight .lb-name {
+    color: #aaffcc;
+    text-shadow: 0 0 10px rgba(170, 255, 204, 0.5);
+}
+
+.lb-row.lb-highlight .lb-score-val {
+    color: #ffee66;
+    text-shadow: 0 0 8px rgba(255, 238, 102, 0.5);
+}
+
+/* NEW HIGH SCORE clignotant */
+.lb-new-record {
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.15em;
+    color: #ffdd00;
+    text-align: center;
+    margin-top: 15px;
+    padding: 8px;
+    letter-spacing: 3px;
+    animation: newRecordBlink 0.5s infinite alternate;
+    text-shadow: 0 0 12px rgba(255, 170, 0, 0.6);
+}
+
+@keyframes newRecordBlink {
+    from { opacity: 1; text-shadow: 0 0 12px rgba(255, 170, 0, 0.6); }
+    to { opacity: 0.4; text-shadow: 0 0 4px rgba(255, 170, 0, 0.2); }
+}
+
+/* =============================================
+   CLASSEMENT INTÉGRÉ DANS LE DEBRIEF
+   ============================================= */
+
+.debrief-leaderboard {
+    position: relative;
+    margin-top: 20px;
+    padding: 18px 20px;
+    background: #0a0a08;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(0, 255, 68, 0.05);
+}
+
+.debrief-leaderboard .scanlines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.debrief-lb-title {
+    position: relative;
+    z-index: 3;
+    font-family: 'Black Ops One', monospace;
+    font-size: 1.1em;
+    color: #ffaa00;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 12px;
+    text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+}
+
+.debrief-leaderboard .lb-table {
+    position: relative;
+    z-index: 3;
+}
+
+.debrief-leaderboard .lb-row {
+    font-size: 0.92em;
+    padding: 4px 0;
+}
+
+/* =============================================
+   BOUTONS DU BRIEFING (layout)
+   ============================================= */
+
+.briefing-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.briefing-buttons .btn-action {
+    font-size: 0.85em;
+    padding: 10px 20px;
+}
+
+/* =============================================
+   MENU DE SÉLECTION DE NIVEAU
+   ============================================= */
+
+.menu-container {
+    position: relative;
+    width: 680px;
+    max-height: 92vh;
+    overflow-y: auto;
+    margin: auto;
+    text-align: center;
+    padding: 30px 35px;
+}
+
+/* Bouton fermer (croix) */
+.menu-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: rgba(40, 35, 20, 0.8);
+    border: 2px solid #5c4a2e;
+    color: #8b7355;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+    font-family: 'Share Tech Mono', monospace;
+    z-index: 10;
+}
+
+.menu-close-btn:hover {
+    border-color: #cc4444;
+    color: #cc4444;
+    background: rgba(204, 68, 68, 0.1);
+}
+
+.menu-header {
+    margin-bottom: 20px;
+}
+
+.menu-header .glitch {
+    font-size: 2.2em;
+    margin: 0 0 5px 0;
+}
+
+.menu-subtitle {
+    font-size: 0.75em;
+    color: #8b7355;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.menu-instruction {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1em;
+    color: #d4a84b;
+    letter-spacing: 2px;
+    padding: 8px 0;
+    border-top: 2px solid #5c4a2e;
+    border-bottom: 2px solid #5c4a2e;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.menu-level-btn {
+    background: rgba(40, 35, 20, 0.9);
+    border: 2px solid #5c4a2e;
+    color: #e8d5a3;
+    padding: 14px 10px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-level-btn:hover {
+    border-color: #d4a84b;
+    background: rgba(60, 50, 25, 0.95);
+    box-shadow: 0 0 15px rgba(210, 168, 75, 0.2);
+    transform: translateY(-1px);
+}
+
+.menu-level-btn:active {
+    transform: translateY(0);
+}
+
+.menu-level-btn.selected {
+    border-color: #d4a84b;
+    background: rgba(80, 65, 30, 0.95);
+    box-shadow: 0 0 20px rgba(210, 168, 75, 0.3);
+}
+
+.menu-level-num {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.4em;
+    color: #d4a84b;
+    min-width: 30px;
+    text-align: center;
+}
+
+.menu-level-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.menu-level-title {
+    color: #e8d5a3;
+    font-size: 0.95em;
+}
+
+.menu-level-lock {
+    font-size: 0.75em;
+    color: #8b7355;
+    letter-spacing: 1px;
+}
+
+.menu-level-lock.unlocked {
+    color: #3a6a2e;
+}
+
+/* Section mot de passe */
+
+/* Bouton menu dans le HUD */
+#btn-menu {
+    margin-top: 5px;
+    padding: 6px 15px;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+/* =============================================
+   MENU PRINCIPAL (4 modes de jeu)
+   ============================================= */
+
+.main-menu-container {
+    position: relative;
+    width: 620px;
+    max-height: 92vh;
+    overflow-y: auto;
+    margin: auto;
+    text-align: center;
+    padding: 30px 35px;
+}
+
+.main-menu-header {
+    margin-bottom: 15px;
+}
+
+.main-menu-header .glitch {
+    font-size: 2.8em;
+    margin: 0 0 5px 0;
+}
+
+.main-menu-subtitle {
+    font-size: 0.75em;
+    color: #8b7355;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.main-menu-instruction {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1em;
+    color: #d4a84b;
+    letter-spacing: 2px;
+    padding: 8px 0;
+    border-top: 2px solid #5c4a2e;
+    border-bottom: 2px solid #5c4a2e;
+    margin-bottom: 20px;
+}
+
+.main-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.main-menu-btn {
+    background: rgba(40, 35, 20, 0.9);
+    border: 2px solid #5c4a2e;
+    color: #e8d5a3;
+    padding: 20px 15px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.main-menu-btn:hover {
+    border-color: #d4a84b;
+    background: rgba(60, 50, 25, 0.95);
+    box-shadow: 0 0 20px rgba(210, 168, 75, 0.25);
+    transform: translateY(-2px);
+}
+
+.main-menu-btn:active {
+    transform: translateY(0);
+}
+
+.main-menu-btn-icon {
+    font-size: 2.2em;
+    min-width: 45px;
+    text-align: center;
+}
+
+.main-menu-btn-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.main-menu-btn-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 0.95em;
+    color: #d4a84b;
+    letter-spacing: 1px;
+}
+
+.main-menu-btn-desc {
+    font-size: 0.78em;
+    color: #8b7355;
+    line-height: 1.3;
+}
+
+/* =============================================
+   SYSTÈME DE COMPTES UTILISATEURS
+   ============================================= */
+
+/* --- Indicateur de connexion (coin supérieur droit, sous le HUD) --- */
+#account-indicator {
+    position: fixed;
+    top: 12px;
+    right: 220px;
+    z-index: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 14px;
+    font-size: 0.78em;
+    background: rgba(30, 25, 15, 0.92);
+    border: 2px solid #3a6a2e;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+#account-indicator:hover {
+    border-color: #5a9a4e;
+    box-shadow: 0 0 12px rgba(90, 154, 78, 0.3);
+}
+
+#account-indicator.hidden { display: none; }
+
+.account-user {
+    color: #8bca6b;
+    white-space: nowrap;
+}
+
+.account-user-icon {
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.btn-logout {
+    background: rgba(120, 50, 30, 0.7);
+    border: 1px solid #8b4030;
+    color: #e8d5a3;
+    padding: 3px 10px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.btn-logout:hover {
+    background: rgba(160, 60, 30, 0.9);
+    border-color: #d44;
+}
+
+/* --- Bandeau utilisateur dans le menu principal --- */
+.main-menu-user-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(58, 106, 46, 0.15);
+    border: 1px solid #3a6a2e;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+    gap: 12px;
+}
+
+.main-menu-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #8bca6b;
+    font-size: 0.9em;
+}
+
+.main-menu-user-info .user-icon {
+    font-size: 1.4em;
+}
+
+.main-menu-user-info .user-login {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    color: #d4a84b;
+    font-size: 1.05em;
+    letter-spacing: 1px;
+}
+
+.main-menu-user-info .user-rank {
+    font-size: 0.78em;
+    color: #88bb55;
+    margin-left: 4px;
+}
+
+.main-menu-user-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-menu-logout {
+    background: rgba(120, 50, 30, 0.6);
+    border: 1px solid #8b4030;
+    color: #e8d5a3;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8em;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+.btn-menu-logout:hover {
+    background: rgba(180, 60, 30, 0.85);
+    border-color: #d44;
+    box-shadow: 0 0 10px rgba(200, 60, 30, 0.3);
+}
+
+.btn-switch-account {
+    background: rgba(60, 80, 120, 0.5);
+    border: 1px solid #4a6a8a;
+    color: #a0c0e0;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8em;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+.btn-switch-account:hover {
+    background: rgba(60, 80, 120, 0.75);
+    border-color: #6a9aba;
+    box-shadow: 0 0 10px rgba(80, 130, 180, 0.3);
+}
+
+/* Bandeau anonyme */
+.main-menu-anon-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(100, 80, 40, 0.15);
+    border: 1px solid #5c4a2e;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 18px;
+}
+
+.main-menu-anon-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8a7a5a;
+    font-size: 0.85em;
+}
+
+.btn-connect-account {
+    background: rgba(58, 106, 46, 0.5);
+    border: 1px solid #3a6a2e;
+    color: #8bca6b;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8em;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+.btn-connect-account:hover {
+    background: rgba(58, 106, 46, 0.75);
+    border-color: #5a9a4e;
+    box-shadow: 0 0 10px rgba(90, 154, 78, 0.3);
+}
+
+/* --- Grille secondaire (profil + défis) --- */
+.main-menu-secondary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.main-menu-secondary-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.main-menu-secondary-btn .sec-btn-icon {
+    font-size: 1.6em;
+    min-width: 35px;
+    text-align: center;
+}
+
+.main-menu-secondary-btn .sec-btn-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.main-menu-secondary-btn .sec-btn-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+}
+
+.main-menu-secondary-btn .sec-btn-desc {
+    font-size: 0.72em;
+    opacity: 0.7;
+    line-height: 1.2;
+}
+
+.sec-btn-profile {
+    background: rgba(58, 106, 46, 0.2);
+    border: 2px solid #3a6a2e;
+    color: #8bca6b;
+}
+.sec-btn-profile:hover {
+    background: rgba(58, 106, 46, 0.4);
+    border-color: #5a9a4e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(90, 154, 78, 0.2);
+}
+.sec-btn-profile .sec-btn-title { color: #8bca6b; }
+
+.sec-btn-challenges {
+    background: rgba(106, 58, 46, 0.2);
+    border: 2px solid #8b5e3c;
+    color: #d4a84b;
+}
+.sec-btn-challenges:hover {
+    background: rgba(106, 58, 46, 0.4);
+    border-color: #bb8e6c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(187, 142, 108, 0.2);
+}
+.sec-btn-challenges .sec-btn-title { color: #d4a84b; }
+
+/* --- Séparateur menu --- */
+.main-menu-separator {
+    border: none;
+    border-top: 1px solid rgba(139, 115, 85, 0.3);
+    margin: 18px 0 5px;
+}
+
+/* --- Transitions fluides pour les overlays --- */
+.overlay {
+    transition: opacity 0.25s ease;
+}
+
+.overlay.fade-in {
+    animation: overlayFadeIn 0.3s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animation entrée pour les conteneurs de menu */
+.main-menu-container,
+.menu-container,
+.profile-container,
+.challenges-container {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.overlay:not(.hidden) .main-menu-container,
+.overlay:not(.hidden) .menu-container,
+.overlay:not(.hidden) .profile-container,
+.overlay:not(.hidden) .challenges-container {
+    animation: menuSlideIn 0.3s ease forwards;
+}
+
+@keyframes menuSlideIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* --- Page d'accueil --- */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    text-align: center;
+    padding: 20px;
+}
+
+.home-logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-logo-img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 25px rgba(212, 168, 75, 0.3));
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.home-star {
+    display: none;
+}
+
+.home-title.glitch {
+    font-size: 4em;
+    margin: 0 0 10px 0;
+    letter-spacing: 8px;
+}
+
+.home-subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    color: #8b7355;
+    letter-spacing: 3px;
+    max-width: 500px;
+}
+
+.home-version {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65em;
+    color: #5c4a2e;
+    letter-spacing: 2px;
+    margin-top: 8px;
+}
+
+.home-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.home-play-btn {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.6em;
+    color: #fff;
+    background: linear-gradient(180deg, #4a8c00 0%, #3a6a00 100%);
+    border: 3px solid #5ca010;
+    border-radius: 6px;
+    padding: 18px 70px;
+    cursor: pointer;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(74, 140, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.home-play-btn:hover {
+    background: linear-gradient(180deg, #5a9c10 0%, #4a7a00 100%);
+    box-shadow: 0 6px 30px rgba(74, 140, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+
+.home-play-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(74, 140, 0, 0.3);
+}
+
+.home-play-icon {
+    font-size: 0.8em;
+}
+
+.home-login-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.home-login-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9em;
+    color: #d4a84b;
+    background: transparent;
+    border: 1px solid #5c4a2e;
+    border-radius: 4px;
+    padding: 10px 30px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s ease;
+}
+
+.home-login-btn:hover {
+    border-color: #d4a84b;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(210, 168, 75, 0.2);
+}
+
+.home-login-hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65em;
+    color: #5c4a2e;
+    letter-spacing: 1px;
+}
+
+.home-credits-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7em;
+    color: #5c4a2e;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 3px;
+    padding: 8px 20px;
+    transition: color 0.2s ease;
+    margin-top: 10px;
+}
+.home-credits-btn:hover {
+    color: #d4a84b;
+}
+
+/* --- Overlay crédits (défilement classique) --- */
+.credits-viewport {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.credits-scroll {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    text-align: center;
+    animation: creditsRoll 35s linear forwards;
+    padding-bottom: 100vh;
+}
+
+@keyframes creditsRoll {
+    0%   { top: 100%; }
+    100% { top: -250%; }
+}
+
+.credits-logo img {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 0 20px rgba(212, 168, 75, 0.4));
+    margin-bottom: 10px;
+}
+
+.credits-game-title.glitch {
+    font-size: 3em;
+    margin: 0 0 8px 0;
+    letter-spacing: 6px;
+}
+
+.credits-game-subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75em;
+    color: #8b7355;
+    letter-spacing: 2px;
+    margin-bottom: 60px;
+}
+
+.credits-section {
+    margin-bottom: 50px;
+}
+
+.credits-heading {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7em;
+    color: #8b7355;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.credits-name {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.2em;
+    color: #e8d5a3;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.credits-detail {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8em;
+    color: #8b7355;
+    letter-spacing: 1px;
+    line-height: 1.6;
+}
+
+.credits-tech {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9em;
+    color: #d4a84b;
+    letter-spacing: 3px;
+    margin: 6px 0;
+}
+
+.credits-thanks {
+    margin-top: 80px;
+}
+
+.credits-final {
+    margin-top: 100px;
+    margin-bottom: 60px;
+}
+
+.credits-star {
+    font-size: 1.5em;
+    color: #d4a84b;
+    letter-spacing: 12px;
+    margin-bottom: 15px;
+}
+
+.credits-copyright {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7em;
+    color: #5c4a2e;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.credits-close-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85em;
+    color: #8b7355;
+    background: rgba(26, 20, 8, 0.8);
+    border: 1px solid #5c4a2e;
+    border-radius: 4px;
+    padding: 10px 40px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+.credits-close-btn:hover {
+    color: #e8d5a3;
+    border-color: #d4a84b;
+    box-shadow: 0 0 15px rgba(210, 168, 75, 0.2);
+}
+
+/* --- Overlay login --- */
+.login-container {
+    position: relative;
+    width: 420px;
+    margin: auto;
+    text-align: center;
+    padding: 30px 35px;
+}
+
+.login-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.6em;
+    color: #d4a84b;
+    margin: 0 0 8px 0;
+}
+
+.login-subtitle {
+    font-size: 0.8em;
+    color: #8b7355;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.login-label {
+    display: block;
+    text-align: left;
+    font-size: 0.85em;
+    color: #d4a84b;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    margin-top: 12px;
+}
+
+.login-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1em;
+    color: #e8d5a3;
+    background: rgba(20, 18, 10, 0.9);
+    border: 2px solid #5c4a2e;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.login-input:focus {
+    border-color: #d4a84b;
+}
+
+.login-error {
+    color: #ff6644;
+    font-size: 0.9em;
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(180, 40, 20, 0.15);
+    border: 1px solid rgba(180, 40, 20, 0.4);
+    border-radius: 3px;
+}
+.login-error.hidden { display: none; }
+
+.login-success {
+    color: #8bca6b;
+    font-size: 0.9em;
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(40, 140, 40, 0.15);
+    border: 1px solid rgba(40, 140, 40, 0.4);
+    border-radius: 3px;
+}
+.login-success.hidden { display: none; }
+
+.login-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+/* --- Indicateurs de statut des niveaux (menu sélection) --- */
+.menu-level-status {
+    font-size: 0.8em;
+    margin-top: 2px;
+}
+.menu-level-status.status-completed {
+    color: #8bca6b;
+}
+.menu-level-status.status-unlocked {
+    color: #d4a84b;
+}
+.menu-level-status.status-locked {
+    color: #8b7355;
+}
+
+/* Niveau complété : bordure verte subtile */
+.menu-level-btn.level-completed {
+    border-color: #3a6a2e;
+}
+.menu-level-btn.level-completed:hover {
+    border-color: #5a9a4e;
+}
+
+/* Niveau débloqué : bordure dorée */
+.menu-level-btn.level-unlocked {
+    border-color: #8b7355;
+}
+.menu-level-btn.level-unlocked:hover {
+    border-color: #d4a84b;
+}
+
+/* =============================================
+   TOOLTIP NOEUD 3D
+   ============================================= */
+
+.node-tooltip {
+    position: fixed;
+    z-index: 2000;
+    padding: 6px 14px;
+    background: rgba(20, 16, 8, 0.95);
+    border: 1px solid #d4a84b;
+    color: #e8d5a3;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    pointer-events: none;
+    white-space: nowrap;
+    transform: translate(-50%, -120%);
+}
+
+.node-tooltip.hidden {
+    display: none;
+}
+
+/* =============================================
+   DÉFIS RÉSEAU
+   ============================================= */
+
+.challenges-container {
+    position: relative;
+    width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px 30px;
+    text-align: center;
+}
+
+.challenges-title {
+    font-family: 'Courier New', monospace;
+    color: #d4a84b;
+    font-size: 1.4em;
+    margin: 0 0 5px;
+    letter-spacing: 3px;
+}
+
+.challenges-subtitle {
+    color: #8b7355;
+    font-size: 0.85em;
+    margin-bottom: 20px;
+}
+
+.challenges-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(139, 115, 85, 0.4);
+}
+
+.challenges-tab {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    color: #8b7355;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+}
+
+.challenges-tab:hover {
+    color: #d4a84b;
+}
+
+.challenges-tab.active {
+    color: #d4a84b;
+    border-bottom-color: #d4a84b;
+}
+
+.challenges-content {
+    min-height: 200px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.challenges-loading {
+    text-align: center;
+    color: #8b7355;
+    padding: 40px;
+}
+
+.challenge-card {
+    background: rgba(30, 25, 15, 0.6);
+    border: 1px solid rgba(139, 115, 85, 0.3);
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.challenge-card:hover {
+    border-color: #d4a84b;
+}
+
+.challenge-info {
+    flex: 1;
+}
+
+.challenge-creator {
+    font-family: 'Courier New', monospace;
+    color: #d4a84b;
+    font-size: 0.95em;
+}
+
+.challenge-level {
+    color: #8b7355;
+    font-size: 0.8em;
+    margin-top: 3px;
+}
+
+.challenge-score-ref {
+    font-family: 'Courier New', monospace;
+    color: #e8d5a3;
+    font-size: 1.1em;
+    text-align: right;
+    min-width: 100px;
+}
+
+.challenge-score-label {
+    color: #8b7355;
+    font-size: 0.7em;
+}
+
+.challenge-actions {
+    margin-left: 15px;
+}
+
+.challenge-accept-btn {
+    padding: 8px 16px;
+    background: rgba(58, 106, 46, 0.4);
+    border: 1px solid #3a6a2e;
+    color: #aaccaa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.challenge-accept-btn:hover {
+    background: rgba(58, 106, 46, 0.7);
+    color: #ddffdd;
+}
+
+.challenge-result {
+    padding: 4px 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75em;
+    border: 1px solid;
+}
+
+.challenge-result.win {
+    color: #88cc88;
+    border-color: #3a6a2e;
+}
+
+.challenge-result.lose {
+    color: #cc8888;
+    border-color: #6a2e2e;
+}
+
+.challenge-empty {
+    text-align: center;
+    color: #8b7355;
+    padding: 30px;
+    font-style: italic;
+}
+
+/* Formulaire de création de défi */
+.challenge-create-form {
+    text-align: left;
+}
+
+.challenge-form-label {
+    color: #8b7355;
+    font-size: 0.8em;
+    margin-bottom: 6px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.challenge-form-select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(20, 16, 8, 0.8);
+    border: 1px solid rgba(139, 115, 85, 0.4);
+    color: #e8d5a3;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.challenge-form-select option {
+    background: #1a1408;
+    color: #e8d5a3;
+}
+
+.challenge-form-info {
+    color: #8b7355;
+    font-size: 0.8em;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(30, 25, 15, 0.4);
+    border-left: 3px solid #d4a84b;
+}
+
+.challenges-btn {
+    margin-top: 8px;
+    width: 100%;
+    background: rgba(106, 58, 46, 0.3);
+    border-color: #8b5e3c;
+    display: none;
+}
+.challenges-btn:hover {
+    background: rgba(106, 58, 46, 0.5);
+    border-color: #bb8e6c;
+}
+
+/* =============================================
+   PAGE PROFIL JOUEUR
+   ============================================= */
+
+.profile-container {
+    position: relative;
+    width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px 30px;
+    text-align: center;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(139, 115, 85, 0.4);
+}
+
+.profile-rank-icon {
+    font-size: 3em;
+    line-height: 1;
+}
+
+.profile-header-info {
+    text-align: left;
+}
+
+.profile-login {
+    font-family: 'Courier New', monospace;
+    color: #d4a84b;
+    font-size: 1.6em;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.profile-rank-label {
+    color: #8b7355;
+    font-size: 0.95em;
+    margin-top: 4px;
+}
+
+/* Grille de statistiques */
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.profile-stat-card {
+    background: rgba(30, 25, 15, 0.6);
+    border: 1px solid rgba(139, 115, 85, 0.3);
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.profile-stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #d4a84b;
+}
+
+.profile-stat-label {
+    font-size: 0.7em;
+    color: #8b7355;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+/* Titres de sections */
+.profile-section-title {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #8b7355;
+    letter-spacing: 2px;
+    margin: 20px 0 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+    padding-bottom: 6px;
+}
+
+/* Grille missions dans le profil */
+.profile-missions-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.profile-mission-card {
+    background: rgba(30, 25, 15, 0.5);
+    border: 1px solid rgba(139, 115, 85, 0.2);
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 0.75em;
+    position: relative;
+}
+
+.profile-mission-card.mission-completed {
+    border-color: #3a6a2e;
+}
+
+.profile-mission-num {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3em;
+    color: #d4a84b;
+    font-weight: bold;
+}
+
+.profile-mission-score {
+    color: #8b7355;
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.profile-mission-medal {
+    margin-top: 4px;
+    font-size: 1.2em;
+}
+
+.profile-mission-locked {
+    color: #555;
+    font-size: 1.1em;
+}
+
+/* Collection médailles */
+.profile-medals-display {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.profile-medal-item {
+    text-align: center;
+    padding: 10px 15px;
+    background: rgba(30, 25, 15, 0.5);
+    border: 1px solid rgba(139, 115, 85, 0.2);
+    min-width: 80px;
+}
+
+.profile-medal-item.has-medal {
+    border-color: #d4a84b;
+}
+
+.profile-medal-icon {
+    font-size: 1.8em;
+}
+
+.profile-medal-count {
+    font-family: 'Courier New', monospace;
+    color: #d4a84b;
+    font-size: 1.1em;
+    margin-top: 4px;
+}
+
+.profile-medal-label {
+    font-size: 0.7em;
+    color: #8b7355;
+    margin-top: 2px;
+    letter-spacing: 1px;
+}
+
+/* Bouton profil dans le menu principal (legacy, remplacé par secondary-grid) */
+.profile-btn {
+    margin-top: 15px;
+    width: 100%;
+    background: rgba(58, 106, 46, 0.3);
+    border-color: #3a6a2e;
+    display: none;
+}
+.profile-btn:hover {
+    background: rgba(58, 106, 46, 0.5);
+    border-color: #5a9a4e;
+}
+
+/* =============================================
+   MODES D'ENTRAÎNEMENT (styles partagés)
+   ============================================= */
+
+.training-container {
+    position: relative;
+    width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 25px 30px;
+}
+
+.training-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #5c4a2e;
+    padding-bottom: 12px;
+}
+
+.training-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.3em;
+    color: #d4a84b;
+    letter-spacing: 3px;
+}
+
+.training-timer {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 2em;
+    color: #e8d5a3;
+    text-shadow: 0 0 10px rgba(232, 213, 163, 0.5), 2px 2px 0 #3a2f1a;
+}
+
+.training-timer.danger {
+    color: #ff4444;
+    text-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+    animation: timerPulse 0.5s infinite alternate;
+}
+
+.training-level-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background: rgba(40, 35, 20, 0.6);
+    border: 1px solid #3a3020;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: #a08050;
+    letter-spacing: 1px;
+}
+
+.training-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.training-actions .btn-success { flex: 1; }
+
+.training-actions .btn-danger {
+    flex: 0 0 auto;
+    padding: 14px 20px;
+    font-size: 0.85em;
+}
+
+/* Sélecteur de niveau d'entraînement */
+.training-level-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.training-level-pick-btn {
+    background: rgba(40, 35, 20, 0.9);
+    border: 2px solid #5c4a2e;
+    color: #e8d5a3;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.training-level-pick-btn:hover {
+    border-color: #d4a84b;
+    background: rgba(60, 50, 25, 0.95);
+    box-shadow: 0 0 15px rgba(210, 168, 75, 0.2);
+    transform: translateY(-1px);
+}
+
+.tlp-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 0.95em;
+    color: #d4a84b;
+    letter-spacing: 1px;
+}
+
+.tlp-desc {
+    font-size: 0.8em;
+    color: #8b7355;
+}
+
+/* Mention résultat */
+.training-result-mention {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 1.4em;
+    color: #d4a84b;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+/* VLSM : liste des besoins */
+.vlsm-requirements {
+    margin: 10px 0;
+    border: 1px solid #3a3020;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.vlsm-requirement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #2a2515;
+}
+
+.vlsm-requirement:last-child {
+    border-bottom: none;
+}
+
+.vlsm-requirement:nth-child(odd) {
+    background: rgba(40, 35, 20, 0.4);
+}
+
+.vlsm-name {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    color: #d4a84b;
+    min-width: 80px;
+    font-size: 0.9em;
+}
+
+.vlsm-label {
+    color: #8b7355;
+    font-size: 0.82em;
+    flex: 1;
+}
+
+.vlsm-hosts {
+    color: #e8d5a3;
+    font-weight: bold;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+/* Bouton retour menu principal */
+#btn-back-main-menu {
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* =============================================
+   ÉVOLUTION 1 : BOUTON PAUSE
+   ============================================= */
+
+.hud-btn-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.hud-btn-row button {
+    flex: 1;
+}
+
+.btn-pause {
+    background: rgba(60, 80, 120, 0.7);
+    color: #a0c0e0;
+    border: 2px solid #4a6a8a;
+    padding: 6px 10px;
+    font-size: 0.78em;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.btn-pause:hover {
+    background: rgba(60, 80, 120, 0.9);
+    border-color: #6a9aba;
+    box-shadow: 0 0 10px rgba(80, 130, 180, 0.3);
+}
+
+.btn-pause.paused {
+    background: rgba(180, 140, 30, 0.7);
+    border-color: #d4a84b;
+    color: #ffe080;
+    animation: pauseBlink 1s infinite alternate;
+}
+
+@keyframes pauseBlink {
+    from { opacity: 1; }
+    to { opacity: 0.6; }
+}
+
+/* Overlay de pause */
+.pause-overlay {
+    background: rgba(5, 3, 0, 0.85) !important;
+    backdrop-filter: blur(4px);
+}
+
+.pause-container {
+    text-align: center;
+}
+
+.pause-icon {
+    font-size: 4em;
+    color: #d4a84b;
+    letter-spacing: 8px;
+    text-shadow: 0 0 30px rgba(212, 168, 75, 0.4);
+    margin-bottom: 10px;
+}
+
+.pause-title {
+    font-family: 'Black Ops One', 'Share Tech Mono', monospace;
+    font-size: 2.5em;
+    color: #d4a84b;
+    letter-spacing: 6px;
+    text-shadow: 0 0 20px rgba(212, 168, 75, 0.3), 3px 3px 0 #1a1408;
+    margin-bottom: 8px;
+}
+
+.pause-info {
+    color: #8a7a5a;
+    font-size: 0.95em;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+/* =============================================
+   ÉVOLUTION 4 : VALIDATION TEMPS RÉEL IP
+   ============================================= */
+
+.ip-input {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ip-input.ip-valid {
+    border-color: #3a6a2e !important;
+    box-shadow: 0 0 8px rgba(58, 106, 46, 0.4) !important;
+}
+
+.ip-input.ip-invalid {
+    border-color: #8b4030 !important;
+    box-shadow: 0 0 8px rgba(139, 64, 48, 0.4) !important;
+}
+
+.ip-input.ip-partial {
+    border-color: #8b7355 !important;
+}
+
+.ip-validation-hint {
+    font-size: 0.7em;
+    min-height: 14px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.ip-validation-hint.valid {
+    color: #5a9a4e;
+}
+
+.ip-validation-hint.invalid {
+    color: #cc5544;
+}
+
+.ip-validation-hint.hint-info {
+    color: #8a7a5a;
+}
+
+/* Validation sur les inputs routeur (dynamiques) */
+.router-ip-input.ip-valid {
+    border-color: #3a6a2e !important;
+    box-shadow: 0 0 6px rgba(58, 106, 46, 0.3) !important;
+}
+
+.router-ip-input.ip-invalid {
+    border-color: #8b4030 !important;
+    box-shadow: 0 0 6px rgba(139, 64, 48, 0.3) !important;
+}
+
+.router-ip-input.ip-partial {
+    border-color: #8b7355 !important;
+}
+
+/* =============================================
+   ZONE D'ERREURS MODALES (validation bloquante)
+   ============================================= */
+
+.modal-errors {
+    background: rgba(120, 30, 20, 0.25);
+    border: 1px solid #8b4030;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    animation: errorShake 0.3s ease;
+}
+
+.modal-errors.hidden {
+    display: none;
+}
+
+.modal-error-line {
+    font-size: 0.78em;
+    color: #e8614a;
+    line-height: 1.5;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.3px;
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(139, 64, 48, 0.2);
+}
+
+.modal-error-line:last-child {
+    border-bottom: none;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+}

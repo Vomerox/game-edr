@@ -1,0 +1,13 @@
+# Données de production (comptes, scores, défis) : jamais versionnées.
+# Les API PHP recréent ces fichiers automatiquement.
+accounts/users.json
+score/level_*.json
+challenges/challenges.json
+
+# Environnement local
+.claude/
+*.tar.gz
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

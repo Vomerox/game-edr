@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>GAME EDR</title>
+    <link rel="stylesheet" href="css/styles.css?v=8">
+    <link rel="stylesheet" href="css/enhancements.css?v=8">
+</head>
+<body>
+    <!-- HUD GAUCHE : Briefing + Score -->
+    <div id="hud-top-left" class="panel">
+        <h1 class="glitch">GAME EDR</h1>
+        <h2 id="level-title">Chargement...</h2>
+        <p id="level-desc">Briefing en attente.</p>
+    </div>
+
+    <!-- HUD DROITE : Timer + Verify + Stats -->
+    <div id="hud-top-right" class="panel">
+        <div id="timer">03:00</div>
+        <button id="btn-verify" class="btn-success pulse">VÉRIFIER LA CONNEXION (PING)</button>
+        <div class="hud-btn-row">
+            <button id="btn-pause" class="btn-pause" title="Pause (Espace)">&#9646;&#9646; PAUSE</button>
+            <button id="btn-menu" class="btn-action">MENU</button>
+        </div>
+        <p class="hint">Cliquez un équipement pour le configurer.</p>
+    </div>
+
+    <!-- OVERLAY PAUSE -->
+    <div id="pause-overlay" class="overlay pause-overlay hidden">
+        <div class="pause-container">
+            <div class="pause-icon">&#9646;&#9646;</div>
+            <div class="pause-title">PAUSE</div>
+            <div class="pause-info">Le chronomètre est arrêté</div>
+            <button id="btn-resume" class="btn-success btn-large">REPRENDRE LA MISSION</button>
+            <button id="btn-pause-menu" class="btn-action btn-large" style="margin-top:10px;">RETOUR AU MENU</button>
+        </div>
+    </div>
+
+    <!-- HUD SCORE (Barre centrale haut) -->
+    <div id="hud-score-bar">
+        <div class="score-item">
+            <span class="score-label">SCORE</span>
+            <span id="hud-score-value" class="score-val">0</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">COMBO</span>
+            <span id="hud-combo-value" class="score-val combo-val">-</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">ERREURS</span>
+            <span id="hud-errors-value" class="score-val errors-val">0</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">MENTION</span>
+            <span id="hud-mention-value" class="score-val mention-val">PASSABLE</span>
+        </div>
+        <div class="score-item">
+            <span class="score-label">RANG</span>
+            <span id="hud-rank-value" class="score-val rank-val">Opérateur Réseau</span>
+        </div>
+    </div>
+
+    <!-- HUD ÉTAT LIAISON (gauche bas) -->
+    <div id="hud-status" class="panel">
+        <div class="status-label">ÉTAT DE LA LIAISON</div>
+        <div id="hud-status-value" class="status-disconnected">INTERROMPUE</div>
+    </div>
+
+    <!-- JOURNAL DES ÉVÉNEMENTS (droite bas) -->
+    <div id="event-log" class="panel">
+        <div class="event-log-title">JOURNAL TRANSMISSIONS</div>
+        <div id="event-log-content"></div>
+    </div>
+
+    <!-- MODAL PC -->
+    <div id="modal-pc" class="panel modal hidden">
+        <h3 id="pc-title">Configuration PC</h3>
+        <label>Adresse IP :</label>
+        <input type="text" id="pc-ip" class="ip-input" placeholder="ex: 192.168.1.10" data-validate="ip" autocomplete="off">
+        <div class="ip-validation-hint" id="pc-ip-hint"></div>
+        <label>Masque :</label>
+        <input type="text" id="pc-mask" class="ip-input" placeholder="ex: 255.255.255.0" data-validate="mask" autocomplete="off">
+        <div class="ip-validation-hint" id="pc-mask-hint"></div>
+        <label>Passerelle (Gateway) :</label>
+        <input type="text" id="pc-gw" class="ip-input" placeholder="ex: 192.168.1.254" data-validate="ip" autocomplete="off">
+        <div class="ip-validation-hint" id="pc-gw-hint"></div>
+        <div class="modal-actions">
+            <button id="btn-save-pc" class="btn-warning">ENREGISTRER</button>
+            <button class="btn-close btn-danger">FERMER</button>
+        </div>
+    </div>
+
+    <!-- MODAL ROUTEUR -->
+    <div id="modal-router" class="panel modal hidden">
+        <h3 id="router-title">Console Routeur</h3>
+        <div class="section-title">INTERFACES</div>
+        <div id="router-interfaces"></div>
+        <div class="section-title">TABLE DE ROUTAGE</div>
+        <div id="router-routes"></div>
+        <button id="btn-add-route" class="btn-action">+ AJOUTER ROUTE</button>
+        <div class="modal-actions">
+            <button id="btn-save-router" class="btn-warning">APPLIQUER</button>
+            <button class="btn-close btn-danger">FERMER</button>
+        </div>
+    </div>
+
+    <!-- AIDE COMMANDES (bas centre) -->
+    <div id="controls-help">
+        <span><kbd>Clic</kbd> configurer</span>
+        <span><kbd>Glisser</kbd> déplacer</span>
+        <span><kbd>Clic droit</kbd> pivoter</span>
+        <span><kbd>Molette</kbd> zoom</span>
+        <span><kbd>Double-clic</kbd> centrer</span>
+        <span><kbd>R</kbd> vue initiale</span>
+        <span><kbd>Entrée</kbd> valider</span>
+    </div>
+
+    <!-- TOOLTIP NOEUD 3D -->
+    <div id="node-tooltip" class="node-tooltip hidden"></div>
+
+    <!-- INDICATEUR COMPTE CONNECTÉ -->
+    <div id="account-indicator" class="panel hidden"></div>
+
+    <!-- OVERLAY PAGE D'ACCUEIL -->
+    <div id="account-choice-overlay" class="overlay hidden">
+        <div class="home-container">
+            <div class="home-logo-section">
+                <img src="assets/logo.svg" alt="GAME EDR" class="home-logo-img" />
+                <h1 class="home-title glitch">GAME EDR</h1>
+                <div class="home-subtitle">SIMULATEUR D'EXPLOITATION DES DEMANDES DE RACCORDEMENT</div>
+                <div class="home-version">GROUPEMENT INFORMATIQUES &amp; R&Eacute;SEAUX 2026</div>
+            </div>
+            <div class="home-actions">
+                <button id="btn-play-anonymous" class="home-play-btn">
+                    <span class="home-play-icon">&#9654;</span>
+                    JOUER
+                </button>
+                <div class="home-login-row">
+                    <button id="btn-play-account" class="home-login-btn">&#128274; SE CONNECTER</button>
+                    <div class="home-login-hint">Sauvegardez votre progression</div>
+                </div>
+            </div>
+            <button id="btn-home-credits" class="home-credits-btn">CR&Eacute;DITS</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY CONNEXION / INSCRIPTION -->
+    <div id="login-overlay" class="overlay hidden">
+        <div class="login-container panel">
+            <h2 class="login-title">IDENTIFICATION</h2>
+            <div class="login-subtitle">Entrez vos identifiants. Si le compte n'existe pas, il sera créé automatiquement.</div>
+            <label class="login-label">LOGIN</label>
+            <input type="text" id="login-input" class="login-input" placeholder="Votre identifiant" autocomplete="username" maxlength="30">
+            <label class="login-label">MOT DE PASSE</label>
+            <input type="password" id="login-password" class="login-input" placeholder="Votre mot de passe" autocomplete="current-password">
+            <div id="login-error" class="login-error hidden"></div>
+            <div id="login-success" class="login-success hidden"></div>
+            <div class="login-actions">
+                <button id="btn-login-validate" class="btn-success btn-large">CONNEXION</button>
+                <button id="btn-login-cancel" class="btn-danger">RETOUR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MENU PRINCIPAL (4 modes) -->
+    <div id="main-menu-overlay" class="overlay hidden">
+        <div class="main-menu-container panel">
+            <div class="main-menu-header">
+                <h1 class="glitch">GAME EDR</h1>
+                <div class="main-menu-subtitle">SIMULATEUR D'EXPLOITATION DES DEMANDES DE RACCORDEMENT</div>
+            </div>
+
+            <!-- Bandeau utilisateur / anonyme -->
+            <div id="main-menu-user-bar"></div>
+
+            <div class="main-menu-instruction">MODES DE JEU</div>
+            <div class="main-menu-grid">
+                <div class="main-menu-btn" data-mode="classique">
+                    <div class="main-menu-btn-icon">&#127942;</div>
+                    <div class="main-menu-btn-info">
+                        <div class="main-menu-btn-title">JEU CLASSIQUE</div>
+                        <div class="main-menu-btn-desc">Missions de configuration réseau 3D</div>
+                    </div>
+                </div>
+                <div class="main-menu-btn" data-mode="network-calc">
+                    <div class="main-menu-btn-icon">&#128268;</div>
+                    <div class="main-menu-btn-info">
+                        <div class="main-menu-btn-title">CALCUL ADRESSE RÉSEAU</div>
+                        <div class="main-menu-btn-desc">Adresse réseau, broadcast, hôtes</div>
+                    </div>
+                </div>
+                <div class="main-menu-btn" data-mode="subnets">
+                    <div class="main-menu-btn-icon">&#128256;</div>
+                    <div class="main-menu-btn-info">
+                        <div class="main-menu-btn-title">SOUS-RÉSEAU</div>
+                        <div class="main-menu-btn-desc">Division en sous-réseaux égaux</div>
+                    </div>
+                </div>
+                <div class="main-menu-btn" data-mode="vlsm">
+                    <div class="main-menu-btn-icon">&#128200;</div>
+                    <div class="main-menu-btn-info">
+                        <div class="main-menu-btn-title">VLSM</div>
+                        <div class="main-menu-btn-desc">Sous-réseaux à taille variable</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grille secondaire (profil + défis) — visible si connecté -->
+            <div id="main-menu-secondary" class="hidden">
+                <hr class="main-menu-separator">
+                <div class="main-menu-secondary-grid">
+                    <div class="main-menu-secondary-btn sec-btn-profile" id="btn-sec-profile">
+                        <div class="sec-btn-icon">&#128100;</div>
+                        <div class="sec-btn-info">
+                            <div class="sec-btn-title">MON PROFIL</div>
+                            <div class="sec-btn-desc">Stats, médailles, progression</div>
+                        </div>
+                    </div>
+                    <div class="main-menu-secondary-btn sec-btn-challenges" id="btn-sec-challenges">
+                        <div class="sec-btn-icon">&#9876;</div>
+                        <div class="sec-btn-info">
+                            <div class="sec-btn-title">DÉFIS RÉSEAU</div>
+                            <div class="sec-btn-desc">Défier d'autres joueurs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- OVERLAY CRÉDITS -->
+    <div id="credits-overlay" class="overlay hidden">
+        <div class="credits-viewport">
+            <div class="credits-scroll">
+                <div class="credits-logo">
+                    <img src="assets/logo.svg" alt="GAME EDR" />
+                </div>
+                <h1 class="credits-game-title glitch">GAME EDR</h1>
+                <div class="credits-game-subtitle">SIMULATEUR D'EXPLOITATION DES DEMANDES DE RACCORDEMENT</div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">CONCEPTION &amp; D&Eacute;VELOPPEMENT</div>
+                    <div class="credits-name">GROUPEMENT INFORMATIQUES &amp; R&Eacute;SEAUX</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">DIRECTION DU PROJET</div>
+                    <div class="credits-name">CNE LEGENDRE</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">PROGRAMMATION</div>
+                    <div class="credits-name">GAME ENGINE &amp; LOGIQUE R&Eacute;SEAU</div>
+                    <div class="credits-detail">JavaScript / Three.js / WebGL</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">GRAPHISMES &amp; INTERFACE</div>
+                    <div class="credits-name">DESIGN MILITAIRE D&Eacute;SERTIQUE</div>
+                    <div class="credits-detail">CSS3 / SVG / Mod&eacute;lisation 3D</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">SC&Eacute;NARIO &amp; MISSIONS</div>
+                    <div class="credits-name">CONFIGURATION R&Eacute;SEAU IP</div>
+                    <div class="credits-detail">Adressage, Sous-r&eacute;seaux, VLSM, Routage</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">MUSIQUE &amp; EFFETS SONORES</div>
+                    <div class="credits-detail">Ambiance tactique militaire</div>
+                </div>
+
+                <div class="credits-section">
+                    <div class="credits-heading">TECHNOLOGIES</div>
+                    <div class="credits-tech">THREE.JS</div>
+                    <div class="credits-tech">WEBGL</div>
+                    <div class="credits-tech">PHP</div>
+                    <div class="credits-tech">HTML5 / CSS3</div>
+                </div>
+
+                <div class="credits-section credits-thanks">
+                    <div class="credits-heading">REMERCIEMENTS</div>
+                    <div class="credits-detail">Merci &agrave; tous les joueurs et testeurs</div>
+                    <div class="credits-detail">qui ont contribu&eacute; &agrave; am&eacute;liorer ce simulateur.</div>
+                </div>
+
+                <div class="credits-section credits-final">
+                    <div class="credits-star">&#9733; &#9733; &#9733;</div>
+                    <div class="credits-copyright">&copy; 2026 GROUPEMENT INFORMATIQUES &amp; R&Eacute;SEAUX</div>
+                    <div class="credits-detail">Tous droits r&eacute;serv&eacute;s</div>
+                </div>
+            </div>
+        </div>
+        <button id="btn-credits-close" class="credits-close-btn">RETOUR</button>
+    </div>
+
+    <!-- OVERLAY DÉFIS RÉSEAU -->
+    <div id="challenges-overlay" class="overlay hidden">
+        <div class="challenges-container panel">
+            <button id="btn-challenges-close" class="menu-close-btn" title="Fermer">&times;</button>
+            <h2 class="challenges-title">DÉFIS RÉSEAU</h2>
+            <div class="challenges-subtitle">Lancez un défi ou relevez celui d'un autre joueur</div>
+            <div class="challenges-tabs">
+                <button class="challenges-tab active" data-tab="open">DÉFIS OUVERTS</button>
+                <button class="challenges-tab" data-tab="mine">MES DÉFIS</button>
+                <button class="challenges-tab" data-tab="create">CRÉER UN DÉFI</button>
+            </div>
+            <div class="challenges-content" id="challenges-content">
+                <div class="challenges-loading">Chargement...</div>
+            </div>
+            <button id="btn-challenges-back" class="btn-action btn-large">RETOUR AU MENU</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY PROFIL JOUEUR -->
+    <div id="profile-overlay" class="overlay hidden">
+        <div class="profile-container panel">
+            <button id="btn-profile-close" class="menu-close-btn" title="Fermer le profil">&times;</button>
+            <div class="profile-header">
+                <div class="profile-rank-icon" id="profile-rank-icon"></div>
+                <div class="profile-header-info">
+                    <h2 class="profile-login" id="profile-login">---</h2>
+                    <div class="profile-rank-label" id="profile-rank-label">Opérateur Réseau</div>
+                </div>
+            </div>
+            <div class="profile-stats-grid">
+                <div class="profile-stat-card">
+                    <div class="profile-stat-value" id="profile-cumul-score">0</div>
+                    <div class="profile-stat-label">SCORE CUMULÉ</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-value" id="profile-missions-completed">0</div>
+                    <div class="profile-stat-label">MISSIONS RÉUSSIES</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-value" id="profile-best-streak">0</div>
+                    <div class="profile-stat-label">MEILLEURE SÉRIE</div>
+                </div>
+                <div class="profile-stat-card">
+                    <div class="profile-stat-value" id="profile-medals-count">0</div>
+                    <div class="profile-stat-label">MÉDAILLES</div>
+                </div>
+            </div>
+            <div class="profile-section-title">PROGRESSION PAR MISSION</div>
+            <div class="profile-missions-grid" id="profile-missions-grid"></div>
+            <div class="profile-section-title">COLLECTION DE MÉDAILLES</div>
+            <div class="profile-medals-display" id="profile-medals-display"></div>
+            <button id="btn-profile-back" class="btn-action btn-large">RETOUR AU MENU</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY MENU SÉLECTION NIVEAU -->
+    <div id="menu-overlay" class="overlay hidden">
+        <div class="menu-container panel">
+            <button id="btn-menu-close" class="menu-close-btn" title="Fermer le menu">✕</button>
+            <div class="menu-header">
+                <h1 class="glitch">GAME EDR</h1>
+                <div class="menu-subtitle">SIMULATEUR D'EXPLOITATION DES DEMANDES DE RACCORDEMENT</div>
+                <div class="menu-instruction">SÉLECTIONNEZ UNE MISSION</div>
+            </div>
+            <div class="menu-grid" id="menu-grid"></div>
+            <button id="btn-back-main-menu" class="btn-action btn-large">RETOUR MENU PRINCIPAL</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY BRIEFING -->
+    <div id="briefing-overlay" class="overlay hidden">
+        <div class="briefing-container panel">
+            <div id="briefing-content"></div>
+            <div class="briefing-buttons">
+                <button id="btn-start-mission" class="btn-success btn-large">LANCER LA MISSION</button>
+                <button id="btn-show-leaderboard" class="btn-action btn-large">CLASSEMENT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY DEBRIEFING -->
+    <div id="debrief-overlay" class="overlay hidden">
+        <div class="debrief-container panel">
+            <div id="debrief-content"></div>
+            <div class="debrief-actions">
+                <button id="btn-next-mission" class="btn-success btn-large">MISSION SUIVANTE</button>
+                <button id="btn-retry-mission" class="btn-warning btn-large">RECOMMENCER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY GAME OVER -->
+    <div id="game-over" class="overlay hidden">
+        <h1 class="glitch">LIAISON PERDUE</h1>
+        <p>Le temps est écoulé ou l'ennemi a détruit le réseau.</p>
+        <div class="gameover-stats">
+            <span>Erreurs commises : <strong id="go-errors">0</strong></span>
+            <span>Score accumulé : <strong id="go-score">0</strong></span>
+        </div>
+        <div class="gameover-actions">
+            <button id="btn-go-retry" class="btn-warning btn-large">RECOMMENCER LA MISSION</button>
+            <button id="btn-go-menu" class="btn-action btn-large" style="margin-top:10px;">RETOUR AU MENU</button>
+        </div>
+    </div>
+
+
+    <!-- OVERLAY BRIEFING BONUS -->
+    <div id="bonus-briefing-overlay" class="overlay hidden">
+        <div class="briefing-container panel">
+            <div id="bonus-briefing-content"></div>
+            <div class="briefing-buttons">
+                <button id="btn-start-bonus" class="btn-success btn-large">COMMENCER L'EPREUVE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY QUESTION BONUS -->
+    <div id="bonus-question-overlay" class="overlay hidden">
+        <div class="bonus-question-container panel">
+            <div class="bonus-header">
+                <div class="bonus-title">EPREUVE SUPPLEMENTAIRE</div>
+                <div id="bonus-timer" class="bonus-timer">01:00</div>
+            </div>
+            <div id="bonus-question-content"></div>
+            <div id="bonus-input-area"></div>
+            <div id="bonus-feedback" class="bonus-feedback hidden"></div>
+            <button id="btn-validate-bonus" class="btn-success btn-large">VALIDER</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY CLASSEMENT (Arcade) -->
+    <div id="leaderboard-overlay" class="overlay hidden">
+        <div class="leaderboard-container">
+            <div class="arcade-screen">
+                <div class="scanlines"></div>
+                <div class="lb-header">HIGH SCORES</div>
+                <div id="lb-level-title" class="lb-level-title">MISSION 1</div>
+                <div id="lb-table" class="lb-table"></div>
+            </div>
+            <button id="btn-close-leaderboard" class="btn-warning btn-large" style="margin-top:15px;">RETOUR</button>
+        </div>
+    </div>
+
+
+    <!-- OVERLAY CRÉDITS COMPLET -->
+    <div id="credits-overlay" class="overlay hidden">
+        <div class="credits-container panel">
+            <div class="credits-header">
+                <div class="credits-star">&#9733; &#9733; &#9733;</div>
+                <h1 class="credits-game-title">GAME EDR</h1>
+                <div class="credits-subtitle">SIMULATEUR D'EXPLOITATION DES DEMANDES DE RACCORDEMENT</div>
+                <div class="credits-version">VERSION 1.0.1</div>
+            </div>
+
+            <div class="credits-section">
+                <div class="credits-section-title">CONCEPTION &amp; D&Eacute;VELOPPEMENT</div>
+                <div class="credits-author">CNE LEGENDRE</div>
+                <div class="credits-org">Cours R&eacute;seaux &mdash; Groupement Informatiques & R&eacute;seaux 2026</div>
+            </div>
+
+            <div class="credits-section">
+                <div class="credits-section-title">HISTORIQUE DES VERSIONS</div>
+                <div class="credits-changelog">
+                    <div class="changelog-entry">
+                        <span class="changelog-ver">v1.0.1</span>
+                        <span class="changelog-desc">-Scoring complet avec combos, m&eacute;dailles, mentions, rangs &bull; D&eacute;briefing p&eacute;dagogique
+						</br>-Syst&egrave;me de high scores arcade avec saisie de nom 3 caract&egrave;res &bull; Classement par mission
+						</br>-Correction du bug de disparition des routes lors de l'ajout
+						</br>-Affichage des noms d'interfaces (Eth0, Eth1...) sur les c&acirc;bles 3D des routeurs
+						</br>-Timer +1 min par niveau &bull; Continuation apr&egrave;s expiration du temps (plus de game over bloquant)</span>
+                    </div>
+                    <div class="changelog-entry">
+                        <span class="changelog-ver">v1.0.0</span>
+                        <span class="changelog-desc">-Version initiale &bull; 10 missions &bull; Moteur de routage IP &bull; Sc&egrave;ne 3D militaire d&eacute;sert</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="credits-section">
+                <div class="credits-section-title">TECHNOLOGIES</div>
+                <div class="credits-tech">JavaScript &bull; HTML5/CSS3 &bull; PHP</div>
+            </div>
+
+            <div class="credits-footer">
+                <div class="credits-year">2026 &mdash; GROUPEMENT INFORMATIQUES & R&Eacute;SEAUX</div>
+            </div>
+
+            <button onclick="document.getElementById('credits-overlay').classList.add('hidden')" class="btn-warning btn-large" style="margin-top:18px;">FERMER</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY MODE ENTRAINEMENT: Calcul adresse réseau -->
+    <div id="training-network-overlay" class="overlay hidden">
+        <div class="training-container panel">
+            <div class="training-header">
+                <div class="training-title">CALCUL ADRESSE RÉSEAU</div>
+                <div id="training-network-timer" class="training-timer">--:--</div>
+            </div>
+            <div class="training-level-bar">
+                <span id="training-network-level">NIVEAU 1</span>
+                <span id="training-network-progress">Question 1/5</span>
+                <span id="training-network-score-display">Score: 0</span>
+            </div>
+            <div id="training-network-question"></div>
+            <div id="training-network-inputs"></div>
+            <div id="training-network-feedback" class="bonus-feedback hidden"></div>
+            <div class="training-actions">
+                <button id="btn-validate-network" class="btn-success btn-large">VALIDER</button>
+                <button id="btn-quit-network" class="btn-danger">MENU PRINCIPAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MODE ENTRAINEMENT: Sous-réseau -->
+    <div id="training-subnet-overlay" class="overlay hidden">
+        <div class="training-container panel">
+            <div class="training-header">
+                <div class="training-title">SOUS-RÉSEAU</div>
+                <div id="training-subnet-timer" class="training-timer">--:--</div>
+            </div>
+            <div class="training-level-bar">
+                <span id="training-subnet-level">NIVEAU 1</span>
+                <span id="training-subnet-progress">Question 1/5</span>
+                <span id="training-subnet-score-display">Score: 0</span>
+            </div>
+            <div id="training-subnet-question"></div>
+            <div id="training-subnet-inputs"></div>
+            <div id="training-subnet-feedback" class="bonus-feedback hidden"></div>
+            <div class="training-actions">
+                <button id="btn-validate-subnet" class="btn-success btn-large">VALIDER</button>
+                <button id="btn-quit-subnet" class="btn-danger">MENU PRINCIPAL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MODE ENTRAINEMENT: VLSM -->
+    <div id="training-vlsm-overlay" class="overlay hidden">
+        <div class="training-container panel">
+            <div class="training-header">
+                <div class="training-title">VLSM</div>
+                <div id="training-vlsm-timer" class="training-timer">--:--</div>
+            </div>
+            <div class="training-level-bar">
+                <span id="training-vlsm-level">NIVEAU 1</span>
+                <span id="training-vlsm-progress">Question 1/5</span>
+                <span id="training-vlsm-score-display">Score: 0</span>
+            </div>
+            <div id="training-vlsm-question"></div>
+            <div id="training-vlsm-inputs"></div>
+            <div id="training-vlsm-feedback" class="bonus-feedback hidden"></div>
+            <div class="training-actions">
+                <button id="btn-validate-vlsm" class="btn-success btn-large">VALIDER</button>
+                <button id="btn-quit-vlsm" class="btn-danger">MENU PRINCIPAL</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/three.min.js"></script>
+    <script src="js/levels.js?v=8"></script>
+    <script src="js/missions.js?v=8"></script>
+    <script src="js/scoring.js?v=8"></script>
+    <script src="js/highscores.js?v=8"></script>
+    <script src="js/ip-utils.js?v=8"></script>
+    <script src="js/bonus.js?v=8"></script>
+    <script src="js/training-network.js?v=8"></script>
+    <script src="js/training-subnet.js?v=8"></script>
+    <script src="js/training-vlsm.js?v=8"></script>
+    <script src="js/accounts.js?v=8"></script>
+    <script src="js/equipment.js?v=8"></script>
+    <script src="js/ambient.js?v=8"></script>
+    <script src="js/gameplay.js?v=8"></script>
+    <script src="js/game.js?v=8"></script>
+</body>
+</html>

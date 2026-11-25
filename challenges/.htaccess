@@ -1,0 +1,6 @@
+Options -Indexes
+
+# Protéger challenges.json contre l'accès direct
+<Files "challenges.json">
+    Require all denied
+</Files>

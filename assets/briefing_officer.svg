@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="600" height="700">
+  <defs>
+    <!-- Peau -->
+    <linearGradient id="skin" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#ddb88a"/>
+      <stop offset="100%" stop-color="#c9a070"/>
+    </linearGradient>
+    <linearGradient id="skinShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c09060"/>
+      <stop offset="100%" stop-color="#a87850"/>
+    </linearGradient>
+    <!-- Béret -->
+    <radialGradient id="beretGrad" cx="0.4" cy="0.4">
+      <stop offset="0%" stop-color="#2a2a45"/>
+      <stop offset="100%" stop-color="#1a1a30"/>
+    </radialGradient>
+    <!-- Camouflage CE réaliste -->
+    <pattern id="camoFull" width="80" height="80" patternUnits="userSpaceOnUse">
+      <!-- Base sable/beige -->
+      <rect width="80" height="80" fill="#b8a882"/>
+      <!-- Taches marron -->
+      <ellipse cx="15" cy="12" rx="18" ry="10" fill="#6b4a2e" transform="rotate(-20 15 12)"/>
+      <ellipse cx="60" cy="55" rx="15" ry="12" fill="#6b4a2e" transform="rotate(30 60 55)"/>
+      <ellipse cx="45" cy="10" rx="10" ry="8" fill="#6b4a2e" transform="rotate(10 45 10)"/>
+      <!-- Taches vert moyen -->
+      <ellipse cx="35" cy="35" rx="20" ry="12" fill="#4a5a2e" transform="rotate(-10 35 35)"/>
+      <ellipse cx="70" cy="20" rx="12" ry="15" fill="#4a5a2e" transform="rotate(25 70 20)"/>
+      <ellipse cx="10" cy="60" rx="16" ry="10" fill="#4a5a2e" transform="rotate(-15 10 60)"/>
+      <!-- Taches noir/vert foncé -->
+      <ellipse cx="25" cy="55" rx="14" ry="8" fill="#1a2a10" transform="rotate(20 25 55)"/>
+      <ellipse cx="55" cy="35" rx="10" ry="14" fill="#1a2a10" transform="rotate(-30 55 35)"/>
+      <ellipse cx="5" cy="30" rx="8" ry="6" fill="#1a2a10"/>
+      <ellipse cx="65" cy="72" rx="12" ry="7" fill="#1a2a10" transform="rotate(15 65 72)"/>
+    </pattern>
+  </defs>
+
+  <!-- ========================================= -->
+  <!--  CNE P. LEGENDRE - POUCES EN L'AIR        -->
+  <!--  Buste penché en avant, sourire, béret    -->
+  <!-- ========================================= -->
+
+  <!-- === BRAS DROIT (côté gauche de l'image) === -->
+  <!-- Bras + avant-bras tendu vers l'avant/bas -->
+  <path d="M185 370 C160 360, 120 340, 90 310 C70 295, 50 275, 40 260"
+        stroke="url(#camoFull)" stroke-width="50" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M185 370 C160 360, 120 340, 90 310 C70 295, 50 275, 40 260"
+        stroke="rgba(0,0,0,0.08)" stroke-width="50" fill="none" stroke-linecap="round"/>
+
+  <!-- Main droite - poing avec pouce levé -->
+  <g transform="translate(35, 245) rotate(-15)">
+    <!-- Paume/poing fermé -->
+    <ellipse cx="0" cy="0" rx="22" ry="18" fill="url(#skin)"/>
+    <!-- Doigts repliés -->
+    <path d="M-12 12 C-14 18, -8 22, -4 18 C0 22, 6 20, 8 16 C12 20, 18 18, 18 12"
+          fill="url(#skin)" stroke="url(#skinShade)" stroke-width="0.8"/>
+    <!-- Pouce levé -->
+    <path d="M-16 -2 C-20 -8, -22 -20, -20 -32 C-19 -40, -16 -45, -12 -45 C-8 -45, -6 -40, -6 -32 C-6 -22, -8 -10, -10 -2"
+          fill="url(#skin)" stroke="url(#skinShade)" stroke-width="0.8"/>
+    <!-- Ongle pouce -->
+    <ellipse cx="-14" cy="-42" rx="5" ry="4" fill="#e8c8a8" stroke="#c8a888" stroke-width="0.5"/>
+  </g>
+
+  <!-- === BRAS GAUCHE (côté droit de l'image) === -->
+  <path d="M415 370 C440 360, 480 340, 510 310 C530 295, 545 278, 555 265"
+        stroke="url(#camoFull)" stroke-width="50" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M415 370 C440 360, 480 340, 510 310 C530 295, 545 278, 555 265"
+        stroke="rgba(0,0,0,0.06)" stroke-width="50" fill="none" stroke-linecap="round"/>
+
+  <!-- Montre noire au poignet gauche -->
+  <ellipse cx="540" cy="278" rx="14" ry="12" fill="#222" stroke="#333" stroke-width="2" transform="rotate(20 540 278)"/>
+  <ellipse cx="540" cy="278" rx="10" ry="8" fill="#111" transform="rotate(20 540 278)"/>
+
+  <!-- Main gauche - poing avec pouce levé -->
+  <g transform="translate(560, 250) rotate(15)">
+    <ellipse cx="0" cy="0" rx="22" ry="18" fill="url(#skin)"/>
+    <path d="M12 12 C14 18, 8 22, 4 18 C0 22, -6 20, -8 16 C-12 20, -18 18, -18 12"
+          fill="url(#skin)" stroke="url(#skinShade)" stroke-width="0.8"/>
+    <path d="M16 -2 C20 -8, 22 -20, 20 -32 C19 -40, 16 -45, 12 -45 C8 -45, 6 -40, 6 -32 C6 -22, 8 -10, 10 -2"
+          fill="url(#skin)" stroke="url(#skinShade)" stroke-width="0.8"/>
+    <ellipse cx="14" cy="-42" rx="5" ry="4" fill="#e8c8a8" stroke="#c8a888" stroke-width="0.5"/>
+  </g>
+
+  <!-- === TORSE / UNIFORME CAMOUFLAGE CE === -->
+  <!-- Corps principal -->
+  <path d="M180 300 C175 320, 160 420, 155 500 L155 700 L445 700 L445 500 C440 420, 425 320, 420 300 Z"
+        fill="url(#camoFull)"/>
+  <!-- Ombre pli central -->
+  <path d="M295 300 L290 700 L310 700 L305 300 Z" fill="rgba(0,0,0,0.05)"/>
+
+  <!-- Épaules -->
+  <path d="M180 300 C180 280, 200 270, 230 265 L370 265 C400 270, 420 280, 420 300 L415 320 L185 320 Z"
+        fill="url(#camoFull)"/>
+
+  <!-- Patch épaule droite (bleu) -->
+  <rect x="400" y="300" width="28" height="32" rx="3" fill="#2a4a8a" stroke="#1a3a6a" stroke-width="1" transform="rotate(5 414 316)"/>
+
+  <!-- Col ouvert -->
+  <path d="M250 270 L300 320 L350 270" fill="#b8a882" stroke="#a09070" stroke-width="1"/>
+  <!-- T-shirt kaki dessous -->
+  <path d="M260 275 L300 310 L340 275" fill="#8a9a6a"/>
+
+  <!-- Ligne boutonnage -->
+  <line x1="300" y1="320" x2="298" y2="700" stroke="#8a7a5a" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Badge P. LEGENDRE -->
+  <rect x="245" y="340" width="70" height="18" rx="2" fill="#6b5a3a" stroke="#8a7a5a" stroke-width="1"/>
+  <text x="280" y="353" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#d4c4a0" letter-spacing="0.5">P. LEGENDRE</text>
+
+  <!-- Grade CNE - 3 barres dorées sur la poitrine -->
+  <g transform="translate(360, 355)">
+    <rect x="0" y="0" width="28" height="20" rx="2" fill="#6b5a3a" stroke="#8a7a5a" stroke-width="0.5"/>
+    <line x1="5" y1="5" x2="23" y2="5" stroke="#d4a84b" stroke-width="3"/>
+    <line x1="5" y1="10" x2="23" y2="10" stroke="#d4a84b" stroke-width="3"/>
+    <line x1="5" y1="15" x2="23" y2="15" stroke="#d4a84b" stroke-width="3"/>
+  </g>
+
+  <!-- Poche poitrine gauche -->
+  <path d="M210 380 L210 430 L270 430 L270 380" fill="none" stroke="#8a7a5a" stroke-width="1.5"/>
+  <path d="M210 378 L210 395 L270 395 L270 378" fill="#a89870" stroke="#8a7a5a" stroke-width="1"/>
+
+  <!-- Poche poitrine droite -->
+  <path d="M330 380 L330 430 L390 430 L390 380" fill="none" stroke="#8a7a5a" stroke-width="1.5"/>
+  <path d="M330 378 L330 395 L390 395 L390 378" fill="#a89870" stroke="#8a7a5a" stroke-width="1"/>
+
+  <!-- === COU === -->
+  <path d="M265 262 L265 225 C265 215, 270 210, 280 208 L320 208 C330 210, 335 215, 335 225 L335 262"
+        fill="url(#skin)"/>
+  <!-- Ombres cou -->
+  <path d="M275 250 L325 250 L330 262 L270 262 Z" fill="rgba(0,0,0,0.06)"/>
+
+  <!-- === TÊTE === -->
+  <!-- Forme ovale du visage -->
+  <ellipse cx="300" cy="155" rx="58" ry="70" fill="url(#skin)"/>
+  <!-- Mâchoire plus carrée -->
+  <path d="M245 170 Q255 210, 300 220 Q345 210, 355 170" fill="url(#skin)"/>
+
+  <!-- Ombres joues -->
+  <path d="M340 120 Q358 140, 355 170 Q345 200, 320 215 Q350 190, 350 160 Q352 130, 340 120 Z"
+        fill="rgba(0,0,0,0.05)"/>
+
+  <!-- Oreilles -->
+  <ellipse cx="240" cy="155" rx="10" ry="16" fill="url(#skin)"/>
+  <ellipse cx="240" cy="155" rx="6" ry="11" fill="url(#skinShade)" opacity="0.15"/>
+  <ellipse cx="360" cy="155" rx="10" ry="16" fill="url(#skin)"/>
+  <ellipse cx="360" cy="155" rx="6" ry="11" fill="url(#skinShade)" opacity="0.15"/>
+
+  <!-- Cheveux très courts sur les côtés (sous le béret) -->
+  <path d="M242 130 Q242 125, 245 120 L248 135 Z" fill="#2a2018" opacity="0.4"/>
+  <path d="M358 130 Q358 125, 355 120 L352 135 Z" fill="#2a2018" opacity="0.4"/>
+
+  <!-- === BERET BLEU MARINE === -->
+  <!-- Forme du béret - incliné à droite -->
+  <ellipse cx="300" cy="105" rx="68" ry="18" fill="url(#beretGrad)"/>
+  <path d="M235 105 Q235 60, 300 50 Q365 60, 365 105 Q360 80, 300 72 Q240 80, 235 105 Z"
+        fill="url(#beretGrad)"/>
+  <!-- Partie tombante du béret (à droite) -->
+  <path d="M340 90 Q370 85, 380 95 Q375 105, 360 108 Q370 95, 350 95 Z"
+        fill="#1a1a30"/>
+  <!-- Bandeau du béret -->
+  <path d="M238 105 Q240 100, 300 97 Q360 100, 362 105 Q360 108, 300 106 Q240 108, 238 105 Z"
+        fill="#222240"/>
+  <!-- Insigne doré (à gauche) -->
+  <g transform="translate(258, 96)">
+    <circle cx="0" cy="0" r="8" fill="#c4941b" stroke="#a07818" stroke-width="1"/>
+    <circle cx="0" cy="0" r="5" fill="#d4a84b"/>
+    <!-- Grenade/flamme stylisée -->
+    <path d="M0 -3 L-2 1 L2 1 Z" fill="#a07818"/>
+    <circle cx="0" cy="2" r="2" fill="#a07818"/>
+  </g>
+
+  <!-- === SOURCILS === -->
+  <path d="M265 128 Q278 122, 290 126" stroke="#2a2018" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M310 126 Q322 122, 335 128" stroke="#2a2018" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- === YEUX === -->
+  <!-- Yeux plissés par le sourire -->
+  <!-- Oeil gauche -->
+  <ellipse cx="278" cy="140" rx="11" ry="8" fill="white"/>
+  <circle cx="280" cy="140" r="5.5" fill="#4a3018"/>
+  <circle cx="281" cy="139" r="3" fill="#1a1008"/>
+  <circle cx="282" cy="137" r="1.3" fill="white" opacity="0.9"/>
+  <path d="M267 137 Q278 132, 289 137" stroke="#2a2018" stroke-width="1.5" fill="none"/>
+  <!-- Paupière inférieure remontée (sourire) -->
+  <path d="M269 143 Q278 147, 287 143" stroke="url(#skinShade)" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+  <!-- Oeil droit -->
+  <ellipse cx="322" cy="140" rx="11" ry="8" fill="white"/>
+  <circle cx="324" cy="140" r="5.5" fill="#4a3018"/>
+  <circle cx="325" cy="139" r="3" fill="#1a1008"/>
+  <circle cx="326" cy="137" r="1.3" fill="white" opacity="0.9"/>
+  <path d="M311 137 Q322 132, 333 137" stroke="#2a2018" stroke-width="1.5" fill="none"/>
+  <path d="M313 143 Q322 147, 331 143" stroke="url(#skinShade)" stroke-width="1.2" fill="none" opacity="0.5"/>
+
+  <!-- Rides sourire yeux -->
+  <path d="M265 135 C263 138, 264 142, 266 145" stroke="url(#skinShade)" stroke-width="0.7" fill="none" opacity="0.3"/>
+  <path d="M335 135 C337 138, 336 142, 334 145" stroke="url(#skinShade)" stroke-width="0.7" fill="none" opacity="0.3"/>
+
+  <!-- === NEZ === -->
+  <path d="M300 135 L298 162 Q294 168, 290 170" stroke="url(#skinShade)" stroke-width="1.5" fill="none"/>
+  <path d="M298 162 Q302 168, 310 170" stroke="url(#skinShade)" stroke-width="1" fill="none" opacity="0.5"/>
+
+  <!-- === GRAND SOURIRE === -->
+  <!-- Lèvres ouvertes -->
+  <path d="M270 185 Q280 180, 300 182 Q320 180, 330 185 Q320 200, 300 204 Q280 200, 270 185 Z"
+        fill="#b85a40" stroke="#9a4a35" stroke-width="1"/>
+  <!-- Dents du haut -->
+  <path d="M273 186 Q280 183, 300 184 Q320 183, 327 186 L325 193 Q310 190, 300 190 Q290 190, 275 193 Z"
+        fill="#f0ece4" stroke="#e0dcd0" stroke-width="0.3"/>
+  <!-- Séparations dents -->
+  <line x1="285" y1="185" x2="285" y2="192" stroke="#ddd8cc" stroke-width="0.5"/>
+  <line x1="293" y1="184" x2="293" y2="191" stroke="#ddd8cc" stroke-width="0.5"/>
+  <line x1="300" y1="184" x2="300" y2="190" stroke="#ddd8cc" stroke-width="0.5"/>
+  <line x1="307" y1="184" x2="307" y2="191" stroke="#ddd8cc" stroke-width="0.5"/>
+  <line x1="315" y1="185" x2="315" y2="192" stroke="#ddd8cc" stroke-width="0.5"/>
+  <!-- Dents du bas (plus petites) -->
+  <path d="M278 197 Q290 200, 300 200 Q310 200, 322 197 L320 194 Q310 196, 300 196 Q290 196, 280 194 Z"
+        fill="#e8e4dc"/>
+  <!-- Lèvre inférieure -->
+  <path d="M275 198 Q300 210, 325 198" stroke="#a05040" stroke-width="2" fill="none"/>
+
+  <!-- Rides du sourire (sillons nasogéniens) -->
+  <path d="M270 170 C265 178, 266 188, 270 195" stroke="url(#skinShade)" stroke-width="1.2" fill="none" opacity="0.25"/>
+  <path d="M330 170 C335 178, 334 188, 330 195" stroke="url(#skinShade)" stroke-width="1.2" fill="none" opacity="0.25"/>
+
+  <!-- Menton -->
+  <ellipse cx="300" cy="215" rx="18" ry="8" fill="url(#skin)"/>
+  <path d="M290 218 Q300 225, 310 218" stroke="url(#skinShade)" stroke-width="0.8" fill="none" opacity="0.2"/>
+</svg>
